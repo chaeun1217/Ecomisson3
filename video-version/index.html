@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>EcoMission — 기후·환경·생태 통합 웹앱</title>
+<style>
+  /* ---------- 기본 스타일 ---------- */
+  :root{
+    --bg:#f3faf6;
+    --card:#ffffff;
+    --accent:#2aa86b; /* 초록 */
+    --accent-2:#2bb7e6; /* 청록 */
+    --muted:#6b7280;
+    --glass: rgba(255,255,255,0.65);
+    --shadow: 0 6px 18px rgba(15,23,42,0.08);
+    font-family: "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{height:100%;margin:0;background:linear-gradient(180deg, #e9fbf5 0%, var(--bg) 100%);color:#0f172a;}
+  a{color:inherit}
+  .app{display:flex;min-height:100vh;gap:24px;padding:28px;box-sizing:border-box;}
+
+  /* ---------- 사이드바 (생략) ---------- */
+
+  .sidebar{
+    width:300px;background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.82));
+    border-radius:16px;padding:20px;box-shadow:var(--shadow);backdrop-filter: blur(6px);
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:12px;
+  }
+  .logo{
+    width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;
+    box-shadow: 0 6px 18px rgba(43,166,107,0.22);
+  }
+  .brand h1{font-size:18px;margin:0;}
+  .user-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;background:rgba(43,166,107,0.06);border-radius:10px}
+  .user-info{display:flex;gap:10px;align-items:center}
+  .avatar{width:42px;height:42px;border-radius:10px;background:linear-gradient(180deg,#fff,#f1fff6);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+  .nav{display:flex;flex-direction:column;gap:8px}
+  .nav button{background:none;border:none;text-align:left;padding:10px;border-radius:10px;cursor:pointer;font-weight:600;color:#074b32}
+  .nav button.active{background:linear-gradient(90deg, rgba(43,166,107,0.12), rgba(43,166,107,0.06));box-shadow:inset 0 0 0 1px rgba(43,166,107,0.04)}
+  .small{font-size:12px;color:var(--muted)}
+  .leaderboard{background:linear-gradient(180deg, rgba(43,166,107,0.03), rgba(43,166,107,0.01));padding:12px;border-radius:10px;}
+  .leaderboard h4{margin:0 0 8px 0;font-size:13px}
+  .leader-row{display:flex;justify-content:space-between;font-weight:600;padding:6px 0}
+  .footer{margin-top:auto;font-size:12px;color:var(--muted)}
+
+  /* ---------- 메인 ---------- */
+  .main{flex:1;display:flex;flex-direction:column;gap:20px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .searchbox{flex:1;display:flex;gap:10px;align-items:center;background:var(--card);padding:10px;border-radius:12px;box-shadow:var(--shadow)}
+  .searchbox input{border:none;outline:none;font-size:14px;background:transparent;flex:1}
+  .stats{display:flex;gap:14px}
+  .stat-card{background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow);min-width:160px;display:flex;flex-direction:column;gap:8px}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .col-8{grid-column:span 8}
+  .col-4{grid-column:span 4}
+  .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow)}
+  h2{margin:0;font-size:18px}
+  p.lead{color:var(--muted);margin:6px 0 0 0}
+
+  /* ---------- Video Section Style ---------- */
+  .video-section {
+    width: 100%;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin:20px 0;
+  }
+  .video-section iframe, .video-section video {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+  }
+
+  /* ---------- Missions, Marketplace, Recommendations, Carbon Lab style (생략) ---------- */
+
+  /* ---------- 반응형 ---------- */
+  @media (max-width:1000px){
+    .app{flex-direction:column;padding:16px}
+    .sidebar{width:100%;flex-direction:row;overflow:auto;padding:12px}
+    .main{width:100%}
+    .grid{grid-template-columns:repeat(6,1fr)}
+    .col-8{grid-column:span 6}
+    .col-4{grid-column:span 6}
+    .market-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:640px){
+    .brand h1{display:none}
+    .sidebar{gap:8px}
+    .leaderboard{display:none}
+    .market-grid{grid-template-columns:1fr}
+  }
+
+  /* ---------- 작고 쾌적한 애니메이션 ---------- */
+  .grow{transition:transform .18s ease}
+  .grow:active{transform:scale(.98)}
+  .leaf-anim{animation:leaf 2.5s ease-in-out infinite}
+  @keyframes leaf{
+    0%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-6px) rotate(2deg)}
+    100%{transform:translateY(0) rotate(0deg)}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR (생략 동일) -->
+  <aside class="sidebar" aria-label="Navigation">
+    ... (사이드바 동일) ...
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      ... (탑바 동일) ...
+    </div>
+
+    <!-- STATS (생략) -->
+
+    <!-- Video Section 삽입 -->
+    <div class="video-section">
+      <iframe src="https://www.youtube.com/embed/2g_7zgGAh74?autoplay=1&loop=1&mute=1&playlist=2g_7zgGAh74"
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+      ... 나머지 섹션들 동일 ...
+    </div>
+
+  </main>
+</div>
+
+<script>
+  /* 기존 JS 코드 그대로 (생략) */
+</script>
+</body>
+</html>
